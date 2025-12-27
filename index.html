@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mekwe Lodge - Chalinze</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Playfair+Display:wght@500;700&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">Mekwe Lodge</div>
+        <ul class="nav-links">
+            <li><a href="#" onclick="app.showPage('home')">Home</a></li>
+            <li><a href="#" onclick="app.showPage('services')">Services & Rooms</a></li>
+            <li><a href="#" onclick="app.showPage('booking')">Book Now</a></li>
+            <li><a href="#" onclick="app.showPage('admin-login')"><i class="fas fa-lock"></i> Admin</a></li>
+        </ul>
+        <div class="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+
+    <!-- Pages Container -->
+    <main id="app-container">
+
+        <!-- Home Page -->
+        <section id="home" class="page active">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>Welcome to Mekwe Lodge</h1>
+                    <p>Experience Verified Comfort in Chalinze</p>
+                    <button onclick="app.showPage('services')" class="btn-primary">View Rooms</button>
+                    <button onclick="app.showPage('booking')" class="btn-secondary">Book a Stay</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services & Rooms Page -->
+        <section id="services" class="page hidden">
+            <div class="container">
+                <h2>Our Rooms & Services</h2>
+                <div id="rooms-grid" class="grid-container">
+                    <!-- Rooms injected here -->
+                    <div class="loading">Loading rooms...</div>
+                </div>
+
+                <h3 class="mt-large">Additional Services</h3>
+                <div id="services-grid" class="grid-container">
+                    <!-- Services injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Booking Page -->
+        <section id="booking" class="page hidden">
+            <div class="container small-container">
+                <h2>Make a Reservation</h2>
+                <div class="card booking-card">
+                    <form id="booking-form" onsubmit="app.handleBookingSubmit(event)">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" name="customerName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Room Type</label>
+                            <select id="booking-room-select" name="roomType" required>
+                                <option value="">Select a Room</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Check-in</label>
+                                <input type="date" name="checkIn" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Check-out</label>
+                                <input type="date" name="checkOut" required>
+                            </div>
+                        </div>
+
+                        <div class="payment-info">
+                            <h4>Payment Required</h4>
+                            <p>Please send payment to <strong>0752-382-552</strong> (M-Pesa / Tigo Pesa).</p>
+                            <p>Once paid, enter the Transaction ID below.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Transaction ID</label>
+                            <input type="text" name="transactionId" placeholder="e.g. 9B34X8..." required>
+                        </div>
+
+                        <button type="submit" class="btn-primary full-width">Confirm Payment & Book</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Login -->
+        <section id="admin-login" class="page hidden">
+            <div class="container small-container">
+                <h2>Admin Login</h2>
+                <form onsubmit="app.handleAdminLogin(event)">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Login</button>
+                    <p style="margin-top: 1rem; font-size: 0.9rem;">
+                        <a href="#" onclick="app.resetConfig()" style="color: #666;">Reset API Connection</a>
+                    </p>
+                </form>
+            </div>
+        </section>
+
+        <!-- Admin Dashboard -->
+        <section id="admin-dashboard" class="page hidden">
+            <div class="container">
+                <div class="admin-header">
+                    <h2>Admin Dashboard</h2>
+                    <button onclick="app.logout()" class="btn-secondary">Logout</button>
+                </div>
+
+                <div class="dashboard-tabs">
+                    <button class="tab-btn active" onclick="admin.showTab('bookings')">Bookings</button>
+                    <button class="tab-btn" onclick="admin.showTab('settings')">Site Settings</button>
+                </div>
+
+                <div id="admin-bookings" class="tab-content active">
+                    <h3>Pending Confirmations</h3>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Customer</th>
+                                    <th>Room</th>
+                                    <th>Transaction ID</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bookings-list">
+                                <!-- Bookings injected here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="admin-settings" class="tab-content hidden">
+                    <h3>Site Configuration</h3>
+                    <div class="card settings-card">
+                        <form onsubmit="admin.saveSettings(event)">
+                            <div class="form-group">
+                                <label>Home Image URL</label>
+                                <input type="url" name="hero_image" placeholder="https://..." style="width: 100%;">
+                                <small>Paste a direct link to an image (Unsplash, Imgur, etc.)</small>
+                            </div>
+                            <button type="submit" class="btn-primary">Save Settings</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Config Modal -->
+    <div id="config-modal" class="modal">
+        <div class="modal-content">
+            <h3>Setup Required</h3>
+            <p>Please enter your deployed Google Apps Script URL:</p>
+            <input type="text" id="api-url-input" placeholder="https://script.google.com/macros/s/..."
+                style="width: 100%; padding: 10px; margin: 10px 0;">
+            <button onclick="app.saveConfig()" class="btn-primary">Save & Start</button>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
