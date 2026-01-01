@@ -7,7 +7,7 @@ const app = {
 
     checkConfig: function () {
         if (!api.isConfigured()) {
-            document.getElementById('config-modal').style.display = 'flex';
+            console.warn('API URL not configured. App functionality will be limited.');
         } else {
             // Pre-load data if we have config
             this.loadRooms();
