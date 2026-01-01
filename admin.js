@@ -56,6 +56,7 @@ const admin = {
     },
 
     async loadSettings() {
+        // Load remote settings
         const data = await api.get('getSettings');
         if (data && !data.error) {
             const form = document.querySelector('#admin-settings form');
@@ -64,12 +65,24 @@ const admin = {
                 if (input) input.value = data.hero_image;
             }
         }
+
+        // Load local API URL
+        const apiInput = document.querySelector('[name="api_url"]');
+        if (apiInput) apiInput.value = localStorage.getItem('mekwe_api_url') || '';
     },
 
     async saveSettings(e) {
         e.preventDefault();
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
+
+        // Update local API URL if changed
+        const newUrl = data.api_url;
+        if (newUrl && newUrl !== api.baseUrl) {
+            api.setBaseUrl(newUrl);
+        }
+        // Remove api_url from data sent to backend to keep sheet clean (optional, but good practice)
+        delete data.api_url;
 
         const result = await api.post('saveSettings', data);
         if (result && result.status === 'success') {
