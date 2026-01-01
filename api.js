@@ -1,6 +1,9 @@
+// TODO: PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL HERE
+const DEFAULT_API_URL = 'https://script.google.com/macros/s/AKfycby-erUwSfHMKQ5tswM-AlH4sw-otMyBD-O16-yRYVDm4rz5xI1QTGZJV6uez6wHoWRkfQ/exec';
+
 class Api {
     constructor() {
-        this.baseUrl = localStorage.getItem('mekwe_api_url') || '';
+        this.baseUrl = localStorage.getItem('mekwe_api_url') || DEFAULT_API_URL;
     }
 
     setBaseUrl(url) {
